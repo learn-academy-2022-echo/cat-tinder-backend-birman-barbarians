@@ -67,12 +67,57 @@ RSpec.describe "Cats", type: :request do
   
     end
   end
-
-
-
-
-
-
-
+  it 'cannot be create without a name' do
+    cat_params = {
+      cat: {
+        age: 2,
+        enjoys: 'Walks in the park',
+        image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
+      }
+    }
+    post '/cats', params:cat_params
+    expect(response.status).to eq 422
+    json = JSON.parse(response.body)
+    expect(json['name']).to include "can't be blank"
+  end
+  it 'cannot be create without an age' do
+    cat_params = {
+      cat: {
+        name: "Bruh",
+        enjoys: 'Walks in the park',
+        image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
+      }
+    }
+    post '/cats', params:cat_params
+    expect(response.status).to eq 422
+    json = JSON.parse(response.body)
+    expect(json['age']).to include "can't be blank"
+  end
+  it 'cannot be create without a thing they enjoy' do
+    cat_params = {
+      cat: {
+        name:"bruh",
+        age: 2,
+        image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
+      }
+    }
+    post '/cats', params:cat_params
+    expect(response.status).to eq 422
+    json = JSON.parse(response.body)
+    expect(json['enjoys']).to include "can't be blank"
+  end
+  it 'cannot be create without an image' do
+    cat_params = {
+      cat: {
+        name: "bruh",
+        age: 2,
+        enjoys: 'Walks in the park',
+      }
+    }
+    post '/cats', params:cat_params
+    expect(response.status).to eq 422
+    json = JSON.parse(response.body)
+    expect(json['image']).to include "can't be blank"
+  end
 end
 
