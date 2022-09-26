@@ -25,7 +25,7 @@ end
     end
 
     def destroy
-        cat = cat.find(params[:id])
+        cat = Cat.find(params[:id])
         cat.destroy
         if cat.destroy
             render json: cat, status: 204
